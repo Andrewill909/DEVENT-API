@@ -21,7 +21,8 @@ function translateToken() {
     return function (req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let userToken = req.cookies['auth_token'] || req.headers['Authorization'];
+                let userToken = req.headers['Authorization'];
+                console.log('user token', userToken);
                 if (!userToken) {
                     next();
                     return;
