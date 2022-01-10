@@ -36,7 +36,7 @@ app.use(
     maxAge: 86400,
   })
 );
-app.use(translateToken());
+app.use(translateToken);
 
 //* routing
 app.use('/auth', AuthRouter);
