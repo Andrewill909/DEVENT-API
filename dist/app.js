@@ -28,7 +28,7 @@ app.use((0, cors_1.default)({
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
     exposedHeaders: ['Set-Cookie'],
     optionsSuccessStatus: 200,
     maxAge: 86400,
