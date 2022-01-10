@@ -119,15 +119,11 @@ const basicLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         //* user without password
         const { _id, fullName, email: em, updatedAt } = user.toJSON();
         const jwtToken = jsonwebtoken_1.default.sign({ _id, fullName, email: em, updatedAt }, config_1.config.secretKey, { expiresIn: '8h' });
-        res.cookie('auth_token', jwtToken, {
-            httpOnly: true,
-            secure: false,
-        });
         //* send response
-        // res.redirect(`${config.CLIENT_URL}/home`);
         res.status(statusCode_1.HttpStatusCode.OK).json({
             status: 'success',
             message: 'Login successful',
+            token: jwtToken,
         });
     }
     catch (error) {
@@ -191,13 +187,9 @@ const googleCallback = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         //? create JWT
         const { _id, fullName, email: em, updatedAt } = user.toJSON();
         const jwtToken = jsonwebtoken_1.default.sign({ _id, fullName, email: em, updatedAt }, config_1.config.secretKey, { expiresIn: '8h' });
-        //* set cookie
-        res.cookie('auth_token', jwtToken, {
-            httpOnly: true,
-            secure: false,
-        });
+        const query = new url_1.URLSearchParams({ token: jwtToken }).toString();
         //* response
-        res.redirect(`${config_1.config.CLIENT_URL}/home`);
+        res.redirect(`${config_1.config.CLIENT_URL}/home?${query}`);
     }
     catch (error) {
         next(error);

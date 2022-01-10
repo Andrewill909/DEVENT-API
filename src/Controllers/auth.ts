@@ -136,16 +136,11 @@ export const basicLogin = async (req: CustomRequestBody<Login>, res: Response, n
 
     const jwtToken = jsonwebtoken.sign({ _id, fullName, email: em, updatedAt }, config.secretKey, { expiresIn: '8h' });
 
-    res.cookie('auth_token', jwtToken, {
-      httpOnly: false,
-      secure: false,
-    });
-
     //* send response
-    // res.redirect(`${config.CLIENT_URL}/home`);
     res.status(HttpStatusCode.OK).json({
       status: 'success',
       message: 'Login successful',
+      token: jwtToken,
     });
   } catch (error) {
     next(error);
@@ -215,15 +210,10 @@ export const googleCallback = async (req: Request, res: Response, next: NextFunc
     const { _id, fullName, email: em, updatedAt } = user.toJSON();
 
     const jwtToken = jsonwebtoken.sign({ _id, fullName, email: em, updatedAt }, config.secretKey, { expiresIn: '8h' });
-
-    //* set cookie
-    res.cookie('auth_token', jwtToken, {
-      httpOnly: false,
-      secure: false,
-    });
+    const query = new URLSearchParams({ token: jwtToken }).toString();
 
     //* response
-    res.redirect(`${config.CLIENT_URL}/home`);
+    res.redirect(`${config.CLIENT_URL}/home?${query}`);
   } catch (error) {
     next(error);
   }

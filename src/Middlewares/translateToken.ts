@@ -14,7 +14,7 @@ interface TokenInterface {
 export function translateToken() {
   return async function (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> {
     try {
-      let userToken = req.cookies['auth_token'];
+      let userToken = req.cookies['auth_token'] || req.headers['Authorization'];
 
       if (!userToken) {
         next();
