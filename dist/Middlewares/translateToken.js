@@ -17,31 +17,29 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const User_1 = require("../Models/User");
 const config_1 = require("../config");
 const error_1 = require("../error");
-function translateToken() {
-    return function (req, res, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                let userToken = req.headers['Authorization'];
-                console.log('user token', userToken);
-                if (!userToken) {
-                    next();
-                    return;
-                }
-                //? verify jwt token
-                const decoded = jsonwebtoken_1.default.verify(userToken, config_1.config.secretKey);
-                req.user = yield User_1.User.findById(decoded._id);
-                console.log('user', req.user);
-                if (!req.user) {
-                    throw new error_1.JWTError('No user correlated with token');
-                }
+function translateToken(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let userToken = req.get('Authorization');
+            if (!userToken) {
+                next();
+                return;
             }
-            catch (error) {
-                if (error.name === 'TokenExpiredError') {
-                    next(new error_1.JWTError('Expired token'));
-                }
+            //? verify jwt token
+            const decoded = jsonwebtoken_1.default.verify(userToken, config_1.config.secretKey);
+            req.user = yield User_1.User.findById(decoded._id);
+            if (!req.user) {
+                throw new error_1.JWTError('No user correlated with token');
             }
             next();
-        });
-    };
+            return;
+        }
+        catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                next(new error_1.JWTError('Expired token'));
+            }
+            next(error);
+        }
+    });
 }
 exports.translateToken = translateToken;

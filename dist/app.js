@@ -33,7 +33,7 @@ app.use((0, cors_1.default)({
     optionsSuccessStatus: 200,
     maxAge: 86400,
 }));
-app.use((0, translateToken_1.translateToken)());
+app.use(translateToken_1.translateToken);
 //* routing
 app.use('/auth', auth_1.AuthRouter);
 //* error middleware
