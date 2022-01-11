@@ -23,6 +23,7 @@ export enum loginMethod {
 }
 
 export interface UserI {
+  _id: Types.ObjectId;
   fullName: string;
   gender: Gender;
   phone: string;

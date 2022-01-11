@@ -5,7 +5,6 @@ import { NextFunction, Request, Response } from 'express';
 import { JWTError } from '../error';
 
 import { RequestWithUser } from '../Controllers/types';
-import { doesNotMatch } from 'assert';
 
 interface TokenInterface {
   _id: string;
@@ -14,7 +13,7 @@ interface TokenInterface {
 
 export async function translateToken(req: RequestWithUser, res: Response, next: NextFunction): Promise<void> {
   try {
-    let userToken: any = req.get('Authorization');
+    let userToken = req.get('Authorization');
 
     if (!userToken) {
       next();
