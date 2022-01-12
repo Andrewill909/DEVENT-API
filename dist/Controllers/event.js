@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insert = void 0;
+exports.index = exports.insert = void 0;
 const mongoose_1 = require("mongoose");
 //* Models and types
 const Event_1 = require("../Models/Event");
@@ -46,7 +46,34 @@ const insert = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
+        //! delete uploaded image
         next(error);
     }
 });
 exports.insert = insert;
+const index = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //* filtering
+    try {
+        let { skip = 0, limit = 5, category = null } = req.query;
+        let filter = {};
+        if (category && mongoose_1.Types.ObjectId.isValid(category)) {
+            filter = Object.assign(Object.assign({}, filter), { category: category });
+        }
+        //* documents count
+        let count = yield Event_1.Event.find().countDocuments();
+        let events = yield Event_1.Event.find(filter)
+            .limit(parseInt(limit))
+            .skip(parseInt(skip))
+            .populate('category')
+            .populate('organizer');
+        res.status(statusCode_1.HttpStatusCode.OK).json({
+            status: 'success',
+            data: events,
+            count: count,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.index = index;
