@@ -43,6 +43,35 @@ export const insert = async (req: RequestWithUser, res: Response, next: NextFunc
       data: event,
     });
   } catch (error) {
+    //! delete uploaded image
+
+    next(error);
+  }
+};
+
+export const index = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+  //* filtering
+  try {
+    let { skip = 0, limit = 5, category = null } = req.query;
+    let filter = {};
+
+    if (category && Types.ObjectId.isValid(category as string)) {
+      filter = { ...filter, category: category };
+    }
+
+    //* documents count
+    let count = await Event.find().countDocuments();
+    let events = await Event.find(filter)
+      .limit(parseInt(limit as string))
+      .skip(parseInt(skip as string))
+      .populate('category')
+      .populate('organizer');
+    res.status(HttpStatusCode.OK).json({
+      status: 'success',
+      data: events,
+      count: count,
+    });
+  } catch (error) {
     next(error);
   }
 };
