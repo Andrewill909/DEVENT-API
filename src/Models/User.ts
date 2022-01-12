@@ -22,7 +22,7 @@ export enum loginMethod {
   basic = 'basic',
 }
 
-export interface UserI {
+export interface UserI extends mongoose.Document {
   _id: Types.ObjectId;
   fullName: string;
   gender: Gender;

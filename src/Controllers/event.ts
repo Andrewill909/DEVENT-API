@@ -38,6 +38,9 @@ export const insert = async (req: RequestWithUser, res: Response, next: NextFunc
     let event = new Event({ ...payload, imagePath, organizer: req.user!._id });
     await event.save();
 
+    req.user!.events.push(event._id);
+    await req.user!.save();
+
     res.status(HttpStatusCode.OK).json({
       status: 'success',
       data: event,

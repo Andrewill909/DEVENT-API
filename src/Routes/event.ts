@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { CustomMulter } from '../Api/CustomMulter';
-import { insert } from '../Controllers/event';
+import { insert, index } from '../Controllers/event';
 import { body } from 'express-validator';
 //* Erorr Handling
 import { validateAll } from '../Helper/validate';
@@ -21,5 +21,7 @@ router.post(
   ]),
   insert
 );
+
+router.get('/events', index);
 
 export { router as EventRouter };
