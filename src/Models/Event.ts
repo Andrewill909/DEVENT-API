@@ -5,14 +5,14 @@ export interface EventI {
   price: string;
   description: string;
   imagePath: string[];
-  videoPath: string[];
   capacity: {
     max: number;
     current: number;
   };
   organizer: Types.ObjectId;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
+  category: Types.ObjectId;
 }
 
 const eventSchema = new Schema<EventI>({
@@ -33,11 +33,6 @@ const eventSchema = new Schema<EventI>({
       type: String,
     },
   ],
-  videoPath: [
-    {
-      type: String,
-    },
-  ],
   capacity: {
     max: {
       type: Number,
@@ -49,17 +44,22 @@ const eventSchema = new Schema<EventI>({
     },
   },
   organizer: {
-    type: 'ObjectId',
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
   startTime: {
-    type: Date,
-    default: new Date(),
+    type: String,
+    default: new Date().toISOString(),
   },
   endTime: {
-    type: Date,
-    default: new Date(),
+    type: String,
+    default: new Date().toISOString(),
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
   },
 });
 

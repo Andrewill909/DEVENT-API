@@ -10,6 +10,8 @@ const cors_1 = __importDefault(require("cors"));
 const debug_1 = __importDefault(require("debug"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const auth_1 = require("./Routes/auth");
+const event_1 = require("./Routes/event");
+const category_1 = require("./Routes/category");
 //* Error handler
 const error_1 = require("./error");
 //* initial setup and parser
@@ -36,6 +38,8 @@ app.use((0, cors_1.default)({
 app.use(translateToken_1.translateToken);
 //* routing
 app.use('/auth', auth_1.AuthRouter);
+app.use('/api', event_1.EventRouter);
+app.use('/api', category_1.CategoryRouter);
 //* error middleware
 app.use(error_1.errorMiddleware);
 //? server configuration

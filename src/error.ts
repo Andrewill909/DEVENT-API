@@ -53,6 +53,16 @@ export class JWTError extends BaseError {
   }
 }
 
+export class AuthError extends BaseError {
+  public readonly detail: string;
+  constructor(detail?: string, name?: string, description?: string) {
+    name = name || 'Authentication Error';
+    description = description || 'UNAUTHORIZED';
+    super(name, description, HttpStatusCode.UNAUTHORIZED, true);
+    this.detail = detail || 'no additional information';
+  }
+}
+
 //? Default error handler
 export function errorMiddleware(error: Error, req: Request, res: Response, next: NextFunction): void {
   console.log(JSON.stringify(error));
