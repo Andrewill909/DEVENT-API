@@ -5,6 +5,8 @@ import cors from 'cors';
 import debug from 'debug';
 import cookieParser from 'cookie-parser';
 import { AuthRouter } from './Routes/auth';
+import { EventRouter } from './Routes/event';
+import { CategoryRouter } from './Routes/category';
 
 //* Error handler
 import { errorMiddleware } from './error';
@@ -40,6 +42,8 @@ app.use(translateToken);
 
 //* routing
 app.use('/auth', AuthRouter);
+app.use('/api', EventRouter);
+app.use('/api', CategoryRouter);
 
 //* error middleware
 app.use(errorMiddleware);

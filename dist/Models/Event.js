@@ -20,11 +20,6 @@ const eventSchema = new mongoose_1.Schema({
             type: String,
         },
     ],
-    videoPath: [
-        {
-            type: String,
-        },
-    ],
     capacity: {
         max: {
             type: Number,
@@ -36,17 +31,22 @@ const eventSchema = new mongoose_1.Schema({
         },
     },
     organizer: {
-        type: 'ObjectId',
+        type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
     startTime: {
-        type: Date,
-        default: new Date(),
+        type: String,
+        default: new Date().toISOString(),
     },
     endTime: {
-        type: Date,
-        default: new Date(),
+        type: String,
+        default: new Date().toISOString(),
+    },
+    category: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: true,
     },
 });
 const Event = (0, mongoose_1.model)('Event', eventSchema);

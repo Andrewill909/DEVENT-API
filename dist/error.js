@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorMiddleware = exports.JWTError = exports.UnprocessableError = exports.ValidationError = exports.BaseError = void 0;
+exports.errorMiddleware = exports.AuthError = exports.JWTError = exports.UnprocessableError = exports.ValidationError = exports.BaseError = void 0;
 const statusCode_1 = require("./Controllers/statusCode");
 class BaseError extends Error {
     constructor(name, description, statusCode, isOperational) {
@@ -41,6 +41,15 @@ class JWTError extends BaseError {
     }
 }
 exports.JWTError = JWTError;
+class AuthError extends BaseError {
+    constructor(detail, name, description) {
+        name = name || 'Authentication Error';
+        description = description || 'UNAUTHORIZED';
+        super(name, description, statusCode_1.HttpStatusCode.UNAUTHORIZED, true);
+        this.detail = detail || 'no additional information';
+    }
+}
+exports.AuthError = AuthError;
 //? Default error handler
 function errorMiddleware(error, req, res, next) {
     console.log(JSON.stringify(error));
