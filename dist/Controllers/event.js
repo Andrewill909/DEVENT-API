@@ -40,6 +40,8 @@ const insert = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     try {
         let event = new Event_1.Event(Object.assign(Object.assign({}, payload), { imagePath, organizer: req.user._id }));
         yield event.save();
+        req.user.events.push(event._id);
+        yield req.user.save();
         res.status(statusCode_1.HttpStatusCode.OK).json({
             status: 'success',
             data: event,

@@ -18,3 +18,4 @@ router.post('/events', CustomMulter_1.CustomMulter.init().array('image'), (0, va
     (0, express_validator_1.body)('startTime').exists().withMessage('start time must be filled').isISO8601().withMessage('start date must use valid date time ISO8601 format'),
     (0, express_validator_1.body)('endTime').exists().withMessage('end time must be filled').isISO8601().withMessage('end date must use valid date time ISO8601 format'),
 ]), event_1.insert);
+router.get('/events', event_1.index);
